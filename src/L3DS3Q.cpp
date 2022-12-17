@@ -46,8 +46,10 @@ configButton(EDIT_PARAM, "Edit mode");
 }
 
 
-json_t *dataToJson() override {
+	json_t *dataToJson() override {
 		json_t *rootJ = json_object();
+		// edit button
+		json_object_set_new(rootJ, "editState", json_integer(editState));
 
 		// leds
 		json_t *ledsJ = json_array();
@@ -62,6 +64,10 @@ json_t *dataToJson() override {
 
 	void dataFromJson(json_t *rootJ) override {
 
+		// edit button
+		json_t *editStateJ = json_object_get(rootJ, "editState");
+		if (editStateJ) editState = json_integer_value(editStateJ);
+		
 		// leds
 		json_t *ledsJ = json_object_get(rootJ, "leds");
 		if (ledsJ) {
